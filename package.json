@@ -1,0 +1,27 @@
+{
+  "name": "diaryweb",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "fable": "dotnet fable",
+    "fable:watch": "npm run fable -- watch src/DiaryWeb.fsproj",
+    "fable:build": "npm run fable -- src/DiaryWeb.fsproj -c Release",
+    "webpack:start": "webpack serve --open",
+    "webpack:build": "webpack",
+    "start": "npm run fable:watch -- --run npm run webpack:start",
+    "build": "npm run fable:build && npm run webpack:build"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "use-sync-external-store": "^1.2.0"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "webpack": "^5.75.0",
+    "webpack-cli": "^5.0.1",
+    "webpack-dev-server": "^4.11.1"
+  }
+}

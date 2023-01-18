@@ -1,0 +1,9 @@
+bin
+obj
+/node_modules
+/paket-files
+
+*.fs.js
+
+/public/main.*.js
+/public/main.*.js.*
