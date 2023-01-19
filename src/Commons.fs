@@ -32,9 +32,6 @@ module Result =
 
 module Routes =
     [<Literal>]
-    let CounterPageRoute = "CounterPageRoute"
-
-    [<Literal>]
     let EventsListPageRoute = "EventsListPageRoute"
 
     [<Literal>]
