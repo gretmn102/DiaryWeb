@@ -6,6 +6,73 @@ open Feliz.Router
 open Commons
 open Api
 
+module SaveAndLoadEvents =
+    open Elmish
+    open Feliz
+
+    type Msg =
+        | Import of string
+
+    type State =
+        {
+            ImportResult: Result<Api.LocalEvents, string> Deferred
+        }
+
+    let init =
+        let state =
+            {
+                ImportResult = NotStartedYet
+            }
+        state
+
+    type UpdateResult =
+        | UpdateRes of State
+        | ImportResult of State * Api.LocalEvents
+
+    let update (msg: Msg) (state: State) =
+        match msg with
+        | Import rawJson ->
+            let res =
+                Api.LocalEvents.import rawJson
+
+            let state =
+                { state with
+                    ImportResult =
+                        Resolved res
+                }
+            match res with
+            | Ok resultValue ->
+                ImportResult (state, resultValue)
+            | Error _ ->
+                UpdateRes state
+
+    let view (state: State) (dispatch: Msg -> unit) =
+        Html.div [
+            Upload.upload {|
+                description = "Load"
+                accept = "application/json"
+                cb = Import >> dispatch
+            |}
+
+            match state.ImportResult with
+            | NotStartedYet -> ()
+            | InProgress ->
+                Html.div [
+                    prop.text "Loading"
+                ]
+            | Resolved r ->
+                match r with
+                | Error errMsg ->
+                    Html.div [
+                        prop.style [
+                            style.color "red"
+                        ]
+                        prop.text errMsg
+                    ]
+                | _ ->
+                    ()
+        ]
+
 module EventView =
     open Elmish
     open Feliz
@@ -206,11 +273,14 @@ type Msg =
     | SetEvent of Event
     | RemoveEvent of Event
     | EventViewMsg of System.DateTime * EventView.Msg
+    | SaveAndLoadEventsMsg of SaveAndLoadEvents.Msg
+    | Export
 
 type State =
     {
         LocalEvents: LocalEvents
         Events: Map<System.DateTime, EventView.State>
+        SaveAndLoadEventsState: SaveAndLoadEvents.State
     }
 
 let init localEvents =
@@ -222,6 +292,8 @@ let init localEvents =
                 |> Map.map (fun _ e ->
                     EventView.init e
                 )
+            SaveAndLoadEventsState =
+                SaveAndLoadEvents.init
         }
     state, Cmd.none
 
@@ -266,9 +338,40 @@ let update (msg: Msg) (state: State) =
                 state, Cmd.ofMsg (RemoveEvent eventEventState.Event)
         | None ->
             state, Cmd.none
+    | SaveAndLoadEventsMsg msg ->
+        match SaveAndLoadEvents.update msg state.SaveAndLoadEventsState with
+        | SaveAndLoadEvents.UpdateRes(state') ->
+            let state =
+                { state with
+                    SaveAndLoadEventsState = state'
+                }
+            state, Cmd.none
+        | SaveAndLoadEvents.ImportResult(state', localEvents) ->
+            let state, cmd = init localEvents
+            let state =
+                { state with
+                    SaveAndLoadEventsState = state'
+                }
+            state, cmd
+    | Export ->
+        LocalEvents.export state.LocalEvents
+        |> saveToDisc "application/json" "events.json"
+
+        state, Cmd.none
 
 let view (state: State) (dispatch: Msg -> unit) =
     Html.div [
+        Html.div [
+            Html.button [
+                prop.text "save"
+                prop.onClick (fun _ ->
+                    dispatch Export
+                )
+            ]
+
+            SaveAndLoadEvents.view state.SaveAndLoadEventsState (SaveAndLoadEventsMsg >> dispatch)
+        ]
+
         Html.div [
             Html.button [
                 prop.text "add"

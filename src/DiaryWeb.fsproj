@@ -7,6 +7,7 @@
   <ItemGroup>
     <Compile Include="Commons.fs" />
     <Compile Include="Api.fs" />
+    <Compile Include="Upload.fs" />
     <Compile Include="EventAdder.fs" />
     <Compile Include="EventsList.fs" />
     <Compile Include="Index.fs" />

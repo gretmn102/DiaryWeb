@@ -2,6 +2,8 @@ source https://api.nuget.org/v3/index.json
 
 storage: none
 framework: net6.0
+nuget Fable.Browser.Url
+nuget Fable.Builders.Fela
 nuget Fable.DateFunctions
 nuget Feliz
 nuget Feliz.Router

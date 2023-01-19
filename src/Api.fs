@@ -35,6 +35,20 @@ module LocalEvents =
                 }
             )
 
+    let import (rawJson: string) =
+        Json.Decode.Auto.fromString rawJson
+        |> Result.map (fun events ->
+            Browser.WebStorage.localStorage.setItem (localKey, Json.Encode.Auto.toString events)
+
+            {
+                Cache = events
+            }
+        )
+
+    let export (localEventsApi: LocalEvents) =
+        localEventsApi.Cache
+        |> Json.Encode.Auto.toString
+
     let set (event: Event) (localEventsApi: LocalEvents) =
         let events =
             Map.add event.DateTime event localEventsApi.Cache
