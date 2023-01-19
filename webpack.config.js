@@ -42,7 +42,7 @@ module.exports = {
     },
   },
   output: {
-    filename: '[name].bundle.js',
+    filename: isProduction ? '[name].[chunkhash].bundle.js' : '[name].bundle.js',
     path: resolve('dist'),
     clean: true
   },
