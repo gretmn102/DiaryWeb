@@ -48,3 +48,13 @@ module LocalEvents =
     let insert dateTime description (localEventsApi: LocalEvents) =
         let newEvent = Event.create dateTime description
         set newEvent localEventsApi
+
+    let remove dateTime (localEventsApi: LocalEvents) =
+        let events =
+            Map.remove dateTime localEventsApi.Cache
+
+        Browser.WebStorage.localStorage.setItem (localKey, Json.Encode.Auto.toString events)
+
+        { localEventsApi with
+            Cache = events
+        }
