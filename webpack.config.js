@@ -19,16 +19,29 @@ module.exports = {
     static: assetsDir,
     hot: true
   },
+  optimization: {
+    // Split the code coming from npm packages into a different file.
+    // 3rd party dependencies change less often, let the browser cache them.
+    splitChunks: {
+        cacheGroups: {
+            commons: {
+                test: /node_modules/,
+                name: "vendors",
+                chunks: "all"
+            }
+        }
+    },
+  },
   output: {
     filename: '[name].bundle.js',
     path: path.resolve(__dirname, 'dist'),
     clean: true
   },
   plugins: [
-    new DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify(isProduction && "production"),
+    isProduction ? new DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify("production"),
       'process.env.PUBLIC_URL': JSON.stringify('.'),
-    }),
+    }) : (_ => undefined),
     isProduction ? new GenerateSW({
       swDest: 'sw.js',
       sourcemap: false
