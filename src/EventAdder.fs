@@ -7,7 +7,6 @@ open Commons
 module DateTimeInput =
     open Elmish
     open Feliz
-    open Fable.DateFunctions
 
     type Msg =
         | Set of string
@@ -21,7 +20,7 @@ module DateTimeInput =
     let init initDateTime =
         let state =
             {
-                Text = initDateTime.ToString ()
+                Text = CustomDateTime.toString initDateTime
                 ResultDateTime = Ok initDateTime
             }
         state
@@ -33,11 +32,7 @@ module DateTimeInput =
                 { state with
                     Text = text
                     ResultDateTime =
-                        match System.DateTime.TryParse text with
-                        | true, dateTime ->
-                            Ok dateTime
-                        | false, _ ->
-                            Error "Something wrong when parse datetime"
+                        CustomDateTime.tryParse text
                 }
             state, Cmd.none
 

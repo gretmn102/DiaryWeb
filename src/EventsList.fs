@@ -238,7 +238,7 @@ module EventView =
     let view (state: State) (dispatch: Msg -> unit) =
         Html.div [
             Html.div [
-                prop.textf "%A" state.Event.DateTime
+                prop.textf "%s" <| CustomDateTime.toString state.Event.DateTime
             ]
 
             match state.DescripitionEditorState with
