@@ -4,11 +4,20 @@ const path = require('path');
 const { DefinePlugin } = require('webpack');
 const { GenerateSW } = require('workbox-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const isProduction = !process.argv.find(v => v.indexOf('watch') !== -1 || v.indexOf('serve') !== -1);
 const isDevelopment = !isProduction && process.env.NODE_ENV !== 'production';
 
 const assetsDir = './public'
+const indexHtmlTemplate = './public/index.html'
+
+/**
+ * @param {string} filePath
+ */
+function resolve(filePath) {
+  return path.isAbsolute(filePath) ? filePath : path.join(__dirname, filePath);
+}
 
 /** @type {import('webpack').Configuration} */
 module.exports = {
@@ -34,10 +43,13 @@ module.exports = {
   },
   output: {
     filename: '[name].bundle.js',
-    path: path.resolve(__dirname, 'dist'),
+    path: resolve('dist'),
     clean: true
   },
   plugins: [
+    new HtmlWebpackPlugin({
+      template: resolve(indexHtmlTemplate),
+    }),
     isProduction ? new DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify("production"),
       'process.env.PUBLIC_URL': JSON.stringify('.'),
@@ -48,7 +60,7 @@ module.exports = {
     }) : (_ => undefined),
     isProduction ? new CopyWebpackPlugin({
       patterns: [
-        { from: path.resolve(assetsDir) }
+        { from: resolve(assetsDir), filter: x => x.indexOf("index.html") === -1 }
       ]
     }) : (_ => undefined)
   ]
