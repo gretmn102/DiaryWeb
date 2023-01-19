@@ -5,7 +5,4 @@ obj
 
 *.fs.js
 
-/public/main.*.js
-/public/main.*.js.*
-/public/sw.js
-/public/workbox-*.js
+/dist
