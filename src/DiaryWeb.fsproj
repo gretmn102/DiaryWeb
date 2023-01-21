@@ -7,12 +7,13 @@
   <ItemGroup>
     <None Include="Utils\registerServiceWorker.js" />
     <Compile Include="Utils\RegisterServiceWorker.fs" />
-    <Compile Include="Commons.fs" />
     <Compile Include="Components\Utils\ResultExt.fs" />
+    <Compile Include="Components\Utils\Deferred.fs" />
     <Compile Include="Components\Utils\CustomDateTime.fs" />
     <Compile Include="Components\Download.fs" />
     <Compile Include="Components\Upload.fs" />
     <Compile Include="Components\DateTimeInput.fs" />
+    <Compile Include="Commons.fs" />
     <Compile Include="Api.fs" />
     <Compile Include="EventAdder.fs" />
     <Compile Include="EventView.fs" />

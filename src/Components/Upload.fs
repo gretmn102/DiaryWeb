@@ -3,7 +3,7 @@ open Feliz
 open Fable.Builders.Fela
 open Browser
 
-open Commons
+open Components.Utils
 
 let upload = React.functionComponent(fun (props: {| accept: string; description: string; cb: string -> unit |}) ->
     let css = Fela.useFela ()

@@ -1,9 +1,4 @@
 module Commons
-type 'a Deferred =
-    | NotStartedYet
-    | InProgress
-    | Resolved of 'a
-
 type Event =
     {
         DateTime: System.DateTime
