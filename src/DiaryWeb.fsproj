@@ -5,6 +5,7 @@
     <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
+    <None Include="Utils\registerServiceWorker.js" />
     <Compile Include="Utils\RegisterServiceWorker.fs" />
     <Compile Include="Commons.fs" />
     <Compile Include="Components\Download.fs" />
