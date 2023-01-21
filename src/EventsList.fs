@@ -48,7 +48,7 @@ module SaveAndLoadEvents =
 
     let view (state: State) (dispatch: Msg -> unit) =
         Html.div [
-            Upload.upload {|
+            Components.Upload.upload {|
                 description = "Load"
                 accept = "application/json"
                 cb = Import >> dispatch

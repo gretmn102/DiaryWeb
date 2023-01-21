@@ -1,4 +1,4 @@
-module Upload
+module Components.Upload
 open Feliz
 open Fable.Builders.Fela
 open Browser
