@@ -8,8 +8,8 @@
     <Compile Include="Utils\RegisterServiceWorker.fs" />
     <Compile Include="Commons.fs" />
     <Compile Include="Components\Download.fs" />
+    <Compile Include="Components\Upload.fs" />
     <Compile Include="Api.fs" />
-    <Compile Include="Upload.fs" />
     <Compile Include="EventAdder.fs" />
     <Compile Include="EventsList.fs" />
     <Compile Include="Index.fs" />
