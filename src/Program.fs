@@ -2,8 +2,8 @@
 open Feliz
 open Browser.Dom
 open Fable.Builders.Fela
-open Fable.Core
-open Fable.Core
+
+open Utils
 
 let view =
     Fela.RendererProvider {
@@ -11,12 +11,6 @@ let view =
 
         Index.router ()
     }
-
-module RegisterServiceWorker =
-    type [<AllowNullLiteral>] IExports =
-        abstract ``default``: unit -> unit
-
-    let [<Import("*","./registerServiceWorker.js")>] registerServiceWorker: IExports = jsNative
 
 RegisterServiceWorker.registerServiceWorker.``default`` ()
 
