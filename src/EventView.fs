@@ -2,6 +2,7 @@ module EventView
 open Elmish
 open Feliz
 
+open Components
 open Commons
 
 module DescripitionEditor =
@@ -165,7 +166,7 @@ let update (msg: Msg) (state: State) =
 let view (state: State) (dispatch: Msg -> unit) =
     Html.div [
         Html.div [
-            prop.textf "%s" <| CustomDateTime.toString state.Event.DateTime
+            prop.textf "%s" <| Utils.CustomDateTime.toString state.Event.DateTime
         ]
 
         match state.DescripitionEditorState with
