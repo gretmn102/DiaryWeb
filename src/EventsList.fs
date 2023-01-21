@@ -274,7 +274,6 @@ type Msg =
     | RemoveEvent of Event
     | EventViewMsg of System.DateTime * EventView.Msg
     | SaveAndLoadEventsMsg of SaveAndLoadEvents.Msg
-    | Export
 
 type State =
     {
@@ -353,21 +352,17 @@ let update (msg: Msg) (state: State) =
                     SaveAndLoadEventsState = state'
                 }
             state, cmd
-    | Export ->
-        LocalEvents.export state.LocalEvents
-        |> saveToDisc "application/json" "events.json"
-
-        state, Cmd.none
 
 let view (state: State) (dispatch: Msg -> unit) =
     Html.div [
         Html.div [
-            Html.button [
-                prop.text "save"
-                prop.onClick (fun _ ->
-                    dispatch Export
-                )
-            ]
+            Components.Download.download {|
+                description = "save"
+                accept = "application/json"
+                filename = "events.json"
+                getData = fun () -> LocalEvents.export state.LocalEvents
+                onDone = id
+            |}
 
             SaveAndLoadEvents.view state.SaveAndLoadEventsState (SaveAndLoadEventsMsg >> dispatch)
         ]
