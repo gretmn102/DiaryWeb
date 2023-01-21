@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "fable": "dotnet fable",
+    "fable:clean": "npm run fable -- clean src --yes",
     "fable:watch": "npm run fable -- watch src/DiaryWeb.fsproj",
     "fable:build": "npm run fable -- src/DiaryWeb.fsproj -c Release",
     "webpack:start": "webpack serve --open",
